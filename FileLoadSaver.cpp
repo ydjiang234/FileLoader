@@ -96,7 +96,7 @@ double FileLoadSaver::StrToDouble(string input)
 void FileLoadSaver::SStoFile(string path, stringstream& ss)
 {
     //char *chr = strdup(path.c_str());
-    std::ofstream t(path, std::ifstream::out, std::ifstream::trunc);
+    std::ofstream t(path, std::ifstream::out);
     t<<ss.str();
     t.close();
 }

@@ -3,25 +3,26 @@
 #include <fstream>
 #include <sstream>
 #include <algorithm>
-#include "FileLoader.h"
+#include "FileLoadSaver.h"
 
 using std::string;
 using std::vector;
 using std::stringstream;
 
-FileLoader::FileLoader() {}
-FileLoader::~FileLoader() {}
+FileLoadSaver::FileLoadSaver() {}
+FileLoadSaver::~FileLoadSaver() {}
 
 
-stringstream FileLoader::FileToString(char *path)
+stringstream FileLoadSaver::FileToString(string path)
 {
-    std::ifstream t(path);
+    //char *chr = strdup(path.c_str());
+    std::ifstream t(path, std::ifstream::in);
     stringstream buffer;
     buffer << t.rdbuf();
     return buffer;
 }
 
-vector<vector<string>> FileLoader::FileToStringArray(char *path, char delim, int buffersize)
+vector<vector<string>> FileLoadSaver::FileToStringArray(string path, char delim, int buffersize)
 {
     vector<vector<string>> out;
     stringstream buffer = FileToString(path);
@@ -43,7 +44,7 @@ vector<vector<string>> FileLoader::FileToStringArray(char *path, char delim, int
     return out;
 }
 
-vector<vector<double>> FileLoader::FileToDoubleArray(char *path, char delim, int buffersize)
+vector<vector<double>> FileLoadSaver::FileToDoubleArray(string path, char delim, int buffersize)
 {
     vector<vector<string>> input = FileToStringArray(path, delim, buffersize);
     vector<vector<double>> out;
@@ -59,7 +60,7 @@ vector<vector<double>> FileLoader::FileToDoubleArray(char *path, char delim, int
     return out;
 }
 
-vector<vector<long>> FileLoader::FileToLongArray(char *path, char delim, int buffersize)
+vector<vector<long>> FileLoadSaver::FileToLongArray(string path, char delim, int buffersize)
 {
     vector<vector<string>> input = FileToStringArray(path, delim, buffersize);
     vector<vector<long>> out;
@@ -75,7 +76,7 @@ vector<vector<long>> FileLoader::FileToLongArray(char *path, char delim, int buf
     return out;
 }
 
-long FileLoader::StrToLong(string input)
+long FileLoadSaver::StrToLong(string input)
 {
     long out;
 
@@ -84,10 +85,57 @@ long FileLoader::StrToLong(string input)
     return out;
 }
 
-double FileLoader::StrToDouble(string input)
+double FileLoadSaver::StrToDouble(string input)
 {
     double out;
     stringstream ss(input);
     ss >> out;
     return out;
+}
+
+void FileLoadSaver::SStoFile(string path, stringstream& ss)
+{
+    //char *chr = strdup(path.c_str());
+    std::ofstream t(path, std::ifstream::out, std::ifstream::trunc);
+    t<<ss.str();
+    t.close();
+}
+
+void FileLoadSaver::DoubleArrayToFile(vector<vector<double>> input, string path, char delim)
+{
+    int m = input.size();
+    int n = input[0].size();
+    stringstream out;
+    for (int i=0; i<m; i++)
+    {
+        for (int j=0; j<n; j++)
+        {
+            out<<' ';
+            out<<input[i][j];
+            if (j!=n-1)
+                out<<delim;
+        }
+        if (i!=m-1)
+            out<<'\n';
+    }
+    this->SStoFile(path, out);
+}
+
+void FileLoadSaver::LongArrayToFile(vector<vector<long>> input, string path, char delim)
+{
+    int m = input.size();
+    int n = input[0].size();
+    stringstream out;
+    for (int i=0; i<m; i++)
+    {
+        for (int j=0; j<n; j++)
+        {
+            out<<' ';
+            out<<input[i][j];
+            if (j!=n-1)
+                out<<delim;
+        }
+        out<<'\n';
+    }
+    this->SStoFile(path, out);
 }

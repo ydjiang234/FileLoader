@@ -1,5 +1,5 @@
-#ifndef FileLoader_h
-#define FileLoader_h
+#ifndef FileLoadSaver_h
+#define FileLoadSaver_h
 #include <iostream>
 #include <vector>
 #include <sstream>
@@ -8,18 +8,22 @@ using std::string;
 using std::vector;
 using std::stringstream;
 
-class FileLoader
+class FileLoadSaver
 {
 public:
-    FileLoader();
-    ~FileLoader();
-    stringstream FileToString(char *path);
-    vector<vector<string>> FileToStringArray(char *path, char delim = ' ', int buffersize=100);
-    vector<vector<double>> FileToDoubleArray(char *path, char delim = ' ', int buffersize=100);
-    vector<vector<long>> FileToLongArray(char *path, char delim = ' ', int buffersize=100);
+    FileLoadSaver();
+    ~FileLoadSaver();
+    stringstream FileToString(string path);
+    vector<vector<string>> FileToStringArray(string path, char delim = ' ', int buffersize=100);
+    vector<vector<double>> FileToDoubleArray(string path, char delim = ' ', int buffersize=100);
+    vector<vector<long>> FileToLongArray(string path, char delim = ' ', int buffersize=100);
+    void DoubleArrayToFile(vector<vector<double>> input, string path, char delim = ' ');
+    void LongArrayToFile(vector<vector<long>> input, string path, char delim = ' ');
+
 private:
     long StrToLong(string input);
     double StrToDouble(string input);
+    void SStoFile(string path, stringstream& ss);
 };
 
 

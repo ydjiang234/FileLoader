@@ -22,20 +22,18 @@ stringstream FileLoadSaver::FileToString(string path)
     return buffer;
 }
 
-vector<vector<string>> FileLoadSaver::FileToStringArray(string path, char delim, int buffersize)
+vector<vector<string>> FileLoadSaver::FileToStringArray(string path, char delim)
 {
     vector<vector<string>> out;
     stringstream buffer = FileToString(path);
     //Initial line
-    char *temp_line = new char[buffersize];
-
-    while (buffer.getline(temp_line, buffersize))
+    string temp_line;
+    while (std::getline(buffer, temp_line))
     {
         vector<string> temp_vector;
-        string temp_line_str = string(temp_line);
         if (delim != ' ')
-            std::replace(temp_line_str.begin(), temp_line_str.end(), delim, ' ');
-        stringstream ss(temp_line_str);
+            std::replace(temp_line.begin(), temp_line.end(), delim, ' ');
+        stringstream ss(temp_line);
         string temp;
         while (ss >> temp)
             temp_vector.push_back(temp);
@@ -44,9 +42,9 @@ vector<vector<string>> FileLoadSaver::FileToStringArray(string path, char delim,
     return out;
 }
 
-vector<vector<double>> FileLoadSaver::FileToDoubleArray(string path, char delim, int buffersize)
+vector<vector<double>> FileLoadSaver::FileToDoubleArray(string path, char delim)
 {
-    vector<vector<string>> input = FileToStringArray(path, delim, buffersize);
+    vector<vector<string>> input = FileToStringArray(path, delim);
     vector<vector<double>> out;
     for (int i=0; i<input.size(); i++)
     {
@@ -60,9 +58,9 @@ vector<vector<double>> FileLoadSaver::FileToDoubleArray(string path, char delim,
     return out;
 }
 
-vector<vector<long>> FileLoadSaver::FileToLongArray(string path, char delim, int buffersize)
+vector<vector<long>> FileLoadSaver::FileToLongArray(string path, char delim)
 {
-    vector<vector<string>> input = FileToStringArray(path, delim, buffersize);
+    vector<vector<string>> input = FileToStringArray(path, delim);
     vector<vector<long>> out;
     for (int i=0; i<input.size(); i++)
     {

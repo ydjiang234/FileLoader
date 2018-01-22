@@ -14,9 +14,9 @@ public:
     FileLoadSaver();
     ~FileLoadSaver();
     stringstream FileToString(string path);
-    vector<vector<string>> FileToStringArray(string path, char delim = ' ', int buffersize=100);
-    vector<vector<double>> FileToDoubleArray(string path, char delim = ' ', int buffersize=100);
-    vector<vector<long>> FileToLongArray(string path, char delim = ' ', int buffersize=100);
+    vector<vector<string>> FileToStringArray(string path, char delim = ' ');
+    vector<vector<double>> FileToDoubleArray(string path, char delim = ' ');
+    vector<vector<long>> FileToLongArray(string path, char delim = ' ');
     void DoubleArrayToFile(vector<vector<double>> input, string path, char delim = ' ');
     void LongArrayToFile(vector<vector<long>> input, string path, char delim = ' ');
 
